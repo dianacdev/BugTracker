@@ -1,24 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import InputField from './components/InputField';
+import BugList from './components/BugList';
+import {Bug} from "./model"
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
+
+  const [todo, setBug] = useState<string>(""); 
+  const [bugs, setBugs] = useState<Bug[]>([]); 
+
+  const handleAdd = (e: React.FormEvent) =>{
+    e.preventDefault();
+    if(todo){
+      setBugs([...bugs, {id:Date.now(), todo, isDone:false}]);
+      setBug("");
+    }
+  };
+
+  console.log(bugs);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <span className="heading">
+          BUG TRAKR
+      </span>
+      <InputField todo={todo} setBug={setBug} handleAdd={handleAdd}/>
+      <BugList bugs={bugs} setBugs={setBugs}/>
     </div>
   );
 }
